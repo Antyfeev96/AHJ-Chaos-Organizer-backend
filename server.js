@@ -9,14 +9,10 @@ const app = new Koa();
 
 const clients = new Set();
 
-const messages = [
-  'Hello!',
-  'Hello there!',
-  'Привет!'
-];
-
-const links = [];
-console.log(formatter.format(new Date()));
+const data = {
+  messages: [],
+  links: [],
+}
 
 app.use(async (ctx, next) => {
   const origin = ctx.request.get("Origin");
@@ -75,7 +71,16 @@ wsServer.on('connection', (ws, req) => {
   })
 
   ws.on('message', msg => {
-    console.log(`message is ${msg}`);
+    const { text, type } = JSON.parse(msg);
+    console.log(msg.text);
+    data.messages.push({
+      text,
+      type,
+      id: uuidv4(),
+      timestamp: formatter.format(new Date())
+    })
+    console.log(data.messages);
+    ws.send(JSON.stringify(data.messages));
   });
 
   ws.on('close', () => {
