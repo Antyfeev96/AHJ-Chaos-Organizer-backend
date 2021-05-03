@@ -3,6 +3,7 @@ const Koa = require("koa");
 const { v4: uuidv4 } = require('uuid');
 const Router = require("koa-router");
 const WS = require('ws');
+const formatter = require('./src/js/formatter');
 
 const app = new Koa();
 
@@ -14,7 +15,8 @@ const messages = [
   'Привет!'
 ];
 
-console.log(123);
+const links = [];
+console.log(formatter.format(new Date()));
 
 app.use(async (ctx, next) => {
   const origin = ctx.request.get("Origin");
