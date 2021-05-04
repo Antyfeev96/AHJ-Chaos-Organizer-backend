@@ -7,6 +7,7 @@
   "author": "Dmitri Antyfeev <60137521+Antyfeev96@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
+    "faker": "^5.5.3",
     "forever": "^3.0.4",
     "http-event-stream": "^0.2.0",
     "koa": "^2.13.1",

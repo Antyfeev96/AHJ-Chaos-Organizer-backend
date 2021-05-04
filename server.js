@@ -2,17 +2,18 @@ const http = require("http");
 const Koa = require("koa");
 const { v4: uuidv4 } = require('uuid');
 const Router = require("koa-router");
-const WS = require('ws');
-const formatter = require('./src/js/formatter');
+const faker = require('faker');
+const Formatter = require('./src/js/Formatter');
+const formatter = new Formatter();
 
 const app = new Koa();
 
-const clients = new Set();
-
 const data = {
   messages: [],
-  links: [],
+  links: []
 }
+
+console.log(data);
 
 app.use(async (ctx, next) => {
   const origin = ctx.request.get("Origin");
@@ -51,41 +52,18 @@ app.use(async (ctx, next) => {
   ctx.respond = false;
 });
 
+app.use(async (ctx) => {
+  switch (ctx.request.url) {
+    case '/articles':
+      ctx.response.body = data;
+      break;
+  }
+});
+
 const router = new Router();
 
 app.use(router.routes()).use(router.allowedMethods());
 
 const port = process.env.PORT || 7070;
 const server = http.createServer(app.callback()).listen(port);
-const wsServer = new WS.Server({server});
-
-wsServer.on('connection', (ws, req) => {
-  const errCallback = (err) => {
-    if (err) {
-      console.log(err);
-    }
-  }
-
-  ws.on('open', msg => {
-    console.log(messages);
-  })
-
-  ws.on('message', msg => {
-    const { text, type } = JSON.parse(msg);
-    console.log(msg.text);
-    data.messages.push({
-      text,
-      type,
-      id: uuidv4(),
-      timestamp: formatter.format(new Date())
-    })
-    console.log(data.messages);
-    ws.send(JSON.stringify(data.messages));
-  });
-
-  ws.on('close', () => {
-    clients.delete(ws);
-    console.log(clients.size);
-  })
-});
 
