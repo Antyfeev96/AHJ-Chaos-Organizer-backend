@@ -3,8 +3,8 @@ const Koa = require("koa");
 const { v4: uuidv4 } = require('uuid');
 const Router = require("koa-router");
 const faker = require('faker');
-const Formatter = require('./src/js/Formatter');
-const formatter = new Formatter();
+const Formatter = require('./src/js/formatter.js');
+const format = Formatter.format;
 
 const app = new Koa();
 
@@ -12,8 +12,6 @@ const data = {
   messages: [],
   links: []
 }
-
-console.log(data);
 
 app.use(async (ctx, next) => {
   const origin = ctx.request.get("Origin");
@@ -53,9 +51,24 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
-  switch (ctx.request.url) {
-    case '/articles':
-      ctx.response.body = data;
+  const { message } = ctx.request.query;
+  console.log(ctx.request.query);
+  const type = message.startsWith('http') || message.startsWith('https') ? 'link' : 'text'
+  const obj = {
+    message,
+    type,
+    id: uuidv4(),
+    timestamp: format(),
+  }
+
+  switch (type) {
+    case 'link':
+      data.links.push(obj);
+      ctx.response.body = JSON.stringify(obj);
+      break;
+    case 'text':
+      data.messages.push(obj)
+      ctx.response.body = JSON.stringify(obj);
       break;
   }
 });
