@@ -2,15 +2,18 @@ const http = require("http");
 const Koa = require("koa");
 const { v4: uuidv4 } = require('uuid');
 const Router = require("koa-router");
-const faker = require('faker');
+// const faker = require('faker');
 const Formatter = require('./src/js/formatter.js');
 const format = Formatter.format;
 
 const app = new Koa();
 
 const data = {
+  videos: [],
   messages: [],
-  links: []
+  audios: [],
+  links: [],
+  voices: []
 }
 
 app.use(async (ctx, next) => {
@@ -51,16 +54,36 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
-  const { message } = ctx.request.query;
   console.log(ctx.request.query);
+  const { message } = ctx.request.query;
   const type = message.startsWith('http') || message.startsWith('https') ? 'link' : 'text'
+  switch (message) {
+    case 'give-messages':
+      ctx.response.body = JSON.stringify(data.messages);
+      return;
+    case 'give-videos':
+      ctx.response.body = JSON.stringify(data.videos);
+      return;
+    case 'give-audios':
+      ctx.response.body = JSON.stringify(data.audios);
+      return;
+    case 'give-links':
+      ctx.response.body = JSON.stringify(data.links);
+      return;
+    case 'give-voices':
+      ctx.response.body = JSON.stringify(data.voices);
+      return; 
+    default:
+      break;
+  }
+  
   const obj = {
     message,
     type,
     id: uuidv4(),
     timestamp: format(),
   }
-
+  
   switch (type) {
     case 'link':
       data.links.push(obj);
