@@ -1,5 +1,6 @@
 const http = require("http");
 const Koa = require("koa");
+const koaBody = require('koa-body');
 const { v4: uuidv4 } = require('uuid');
 const Router = require("koa-router");
 // const faker = require('faker');
@@ -7,6 +8,7 @@ const Formatter = require('./src/js/formatter.js');
 const format = Formatter.format;
 
 const app = new Koa();
+app.use(koaBody());
 
 const data = {
   videos: [],
@@ -55,7 +57,7 @@ app.use(async (ctx, next) => {
 
 app.use(async (ctx) => {
   console.log(ctx.request.query);
-  const { message } = ctx.request.query;
+  const { message, value } = ctx.request.query;
   const type = message.startsWith('http') || message.startsWith('https') ? 'link' : 'text'
   switch (message) {
     case 'give-messages':
@@ -73,6 +75,9 @@ app.use(async (ctx) => {
     case 'give-voices':
       ctx.response.body = JSON.stringify(data.voices);
       return; 
+    case 'image':
+      console.log(value);
+      break;
     default:
       break;
   }
