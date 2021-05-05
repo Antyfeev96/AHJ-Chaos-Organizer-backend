@@ -11,11 +11,8 @@ const app = new Koa();
 app.use(koaBody());
 
 const data = {
-  videos: [],
   messages: [],
-  audios: [],
   links: [],
-  voices: []
 }
 
 app.use(async (ctx, next) => {
@@ -63,18 +60,9 @@ app.use(async (ctx) => {
     case 'give-messages':
       ctx.response.body = JSON.stringify(data.messages);
       return;
-    case 'give-videos':
-      ctx.response.body = JSON.stringify(data.videos);
-      return;
-    case 'give-audios':
-      ctx.response.body = JSON.stringify(data.audios);
-      return;
     case 'give-links':
       ctx.response.body = JSON.stringify(data.links);
       return;
-    case 'give-voices':
-      ctx.response.body = JSON.stringify(data.voices);
-      return; 
     case 'image':
       console.log(value);
       break;
