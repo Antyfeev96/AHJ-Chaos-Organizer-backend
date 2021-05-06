@@ -13,6 +13,9 @@ app.use(koaBody());
 const data = {
   messages: [],
   links: [],
+  images: [],
+  videos: [],
+  audios: [],
 }
 
 app.use(async (ctx, next) => {
@@ -54,28 +57,35 @@ app.use(async (ctx, next) => {
 
 app.use(async (ctx) => {
   console.log(ctx.request.query);
-  const { message, value } = ctx.request.query;
-  const type = message.startsWith('http') || message.startsWith('https') ? 'link' : 'text'
-  switch (message) {
-    case 'give-messages':
+  const { text, type } = ctx.request.query;
+  switch (text) {
+    case 'text':
       ctx.response.body = JSON.stringify(data.messages);
       return;
-    case 'give-links':
+    case 'link':
       ctx.response.body = JSON.stringify(data.links);
       return;
     case 'image':
-      console.log(value);
+      ctx.response.body = JSON.stringify(data.images);
+      break;
+    case 'video':
+      ctx.response.body = JSON.stringify(data.videos);
+      break;
+    case 'audio':
+      ctx.response.body = JSON.stringify(data.audios);
       break;
     default:
       break;
   }
   
   const obj = {
-    message,
+    text,
     type,
     id: uuidv4(),
     timestamp: format(),
   }
+
+  console.log(obj);
   
   switch (type) {
     case 'link':
@@ -83,7 +93,19 @@ app.use(async (ctx) => {
       ctx.response.body = JSON.stringify(obj);
       break;
     case 'text':
-      data.messages.push(obj)
+      data.messages.push(obj);
+      ctx.response.body = JSON.stringify(obj);
+      break;
+    case 'image':
+      data.images.push(obj);
+      ctx.response.body = JSON.stringify(obj);
+      break;
+    case 'video':
+      data.videos.push(obj);
+      ctx.response.body = JSON.stringify(obj);
+      break;
+    case 'audio':
+      data.audios.push(obj);
       ctx.response.body = JSON.stringify(obj);
       break;
   }
