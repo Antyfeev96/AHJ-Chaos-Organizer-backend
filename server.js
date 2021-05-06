@@ -59,21 +59,21 @@ app.use(async (ctx) => {
   console.log(ctx.request.query);
   const { text, type } = ctx.request.query;
   switch (text) {
-    case 'text':
+    case 'give-message':
       ctx.response.body = JSON.stringify(data.messages);
       return;
-    case 'link':
+    case 'give-link':
       ctx.response.body = JSON.stringify(data.links);
       return;
-    case 'image':
+    case 'give-image':
       ctx.response.body = JSON.stringify(data.images);
-      break;
-    case 'video':
+      return;
+    case 'give-video':
       ctx.response.body = JSON.stringify(data.videos);
-      break;
-    case 'audio':
+      return;
+    case 'give-audio':
       ctx.response.body = JSON.stringify(data.audios);
-      break;
+      return;
     default:
       break;
   }
@@ -84,8 +84,6 @@ app.use(async (ctx) => {
     id: uuidv4(),
     timestamp: format(),
   }
-
-  console.log(obj);
   
   switch (type) {
     case 'link':
