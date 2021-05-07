@@ -11,11 +11,11 @@ const app = new Koa();
 app.use(koaBody());
 
 const data = {
-  messages: [],
-  links: [],
-  images: [],
-  videos: [],
-  audios: [],
+  message: [],
+  link: [],
+  image: [],
+  video: [],
+  audio: [],
 }
 
 app.use(async (ctx, next) => {
@@ -57,22 +57,22 @@ app.use(async (ctx, next) => {
 
 app.use(async (ctx) => {
   console.log(ctx.request.query);
-  const { text, type } = ctx.request.query;
+  const { text, type, array } = ctx.request.query;
   switch (text) {
     case 'give-message':
-      ctx.response.body = JSON.stringify(data.messages);
+      ctx.response.body = JSON.stringify(data.message);
       return;
     case 'give-link':
-      ctx.response.body = JSON.stringify(data.links);
+      ctx.response.body = JSON.stringify(data.link);
       return;
     case 'give-image':
-      ctx.response.body = JSON.stringify(data.images);
+      ctx.response.body = JSON.stringify(data.image);
       return;
     case 'give-video':
-      ctx.response.body = JSON.stringify(data.videos);
+      ctx.response.body = JSON.stringify(data.video);
       return;
     case 'give-audio':
-      ctx.response.body = JSON.stringify(data.audios);
+      ctx.response.body = JSON.stringify(data.audio);
       return;
     default:
       break;
@@ -87,24 +87,54 @@ app.use(async (ctx) => {
   
   switch (type) {
     case 'link':
-      data.links.push(obj);
+      data.link.push(obj);
+      obj.length = data.link.length;
+      obj.array = 'link';
       ctx.response.body = JSON.stringify(obj);
       break;
-    case 'text':
-      data.messages.push(obj);
+    case 'message':
+      data.message.push(obj);
+      obj.length = data.message.length;
+      obj.array = 'message';
       ctx.response.body = JSON.stringify(obj);
       break;
     case 'image':
-      data.images.push(obj);
+      data.image.push(obj);
+      obj.length = data.image.length;
+      obj.array = 'image';
       ctx.response.body = JSON.stringify(obj);
       break;
     case 'video':
-      data.videos.push(obj);
+      data.video.push(obj);
+      obj.length = data.video.length;
+      obj.array = 'video';
       ctx.response.body = JSON.stringify(obj);
       break;
     case 'audio':
-      data.audios.push(obj);
+      data.audio.push(obj);
+      obj.length = data.audio.length;
+      obj.array = 'audio';
       ctx.response.body = JSON.stringify(obj);
+      break;
+  }
+
+  switch (array) {
+    case 'link':
+      ctx.response.body = ['link', data.link.length];
+      break;
+    case 'message':
+      ctx.response.body = ['message', data.message.length];
+      break;
+    case 'image':
+      ctx.response.body = ['image', data.image.length];
+      break;
+    case 'video':
+      ctx.response.body = ['video', data.video.length];
+      break;
+    case 'audio':
+      ctx.response.body = ['audio', data.audio.length];
+      break;
+    default:
       break;
   }
 });
