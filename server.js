@@ -8,7 +8,10 @@ const Formatter = require('./src/js/formatter.js');
 const format = Formatter.format;
 
 const app = new Koa();
-app.use(koaBody());
+app.use(koaBody({
+  multipart: true,
+  urlencoded: true
+}));
 
 const data = {
   message: [],
@@ -56,8 +59,8 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
-  console.log(ctx.request.query);
-  const { text, type, array } = ctx.request.query;
+  console.log(ctx.request.body);
+  const { text, type, array, data } = ctx.request.query;
   switch (text) {
     case 'give-message':
       ctx.response.body = JSON.stringify(data.message);
