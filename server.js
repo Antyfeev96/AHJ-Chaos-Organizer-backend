@@ -69,6 +69,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
+  console.log(__dirname);
   const { file } = ctx.request.files;
   const { text, type, array } = ctx.request.query;
 
