@@ -1,5 +1,8 @@
 const http = require("http");
+const path = require('path');
+const fs = require('fs');
 const Koa = require("koa");
+const koaStatic = require('koa-static');
 const koaBody = require('koa-body');
 const { v4: uuidv4 } = require('uuid');
 const Router = require("koa-router");
@@ -7,10 +10,17 @@ const Router = require("koa-router");
 const Formatter = require('./src/js/formatter.js');
 const format = Formatter.format;
 
+const public = path.join(__dirname, '/public')
+
 const app = new Koa();
+
+app.use(koaStatic(public));
+
 app.use(koaBody({
+  text: true,
+  urlencoded: true,
   multipart: true,
-  urlencoded: true
+  json: true,
 }));
 
 const data = {
@@ -59,8 +69,36 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
-  console.log(ctx.request.body);
-  const { text, type, array, data } = ctx.request.query;
+  const { file } = ctx.request.files;
+  const { text, type, array } = ctx.request.query;
+
+  if (file) {
+    const link = await new Promise((resolve, reject) => {
+    const oldPath = file.path;
+    const filename = uuidv4();
+    const newPath = path.join(public, filename);
+      
+    const callback = (error) => reject(error);
+      
+    const readStream = fs.createReadStream(oldPath);
+    const writeStream = fs.createWriteStream(newPath);
+      
+    readStream.on('error', callback);
+          writeStream.on('error', callback);
+      
+    readStream.on('close', () => {
+      console.log('close');
+      fs.unlink(oldPath, callback);
+      resolve(filename);
+    });
+      
+    readStream.pipe(writeStream);
+  });
+      
+  ctx.response.body = link;
+  return;
+  }
+
   switch (text) {
     case 'give-message':
       ctx.response.body = JSON.stringify(data.message);
