@@ -98,7 +98,7 @@ app.use(async (ctx) => {
 
     data[type].push({
       link,
-      format()
+      timestamp: format()
     });
         
     ctx.response.body = JSON.stringify({
