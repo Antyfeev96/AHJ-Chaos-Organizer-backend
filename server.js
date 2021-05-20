@@ -77,8 +77,6 @@ app.use(async (ctx) => {
     const oldPath = file.path;
     const filename = uuidv4();
     const newPath = path.join(public, filename);
-    console.log('Public: ', public);
-    console.log('New Path: ', newPath);
       
     const callback = (error) => reject(error);
       
@@ -90,6 +88,8 @@ app.use(async (ctx) => {
       
     readStream.on('close', () => {
       console.log('close');
+      console.log('Public: ', public);
+      console.log('New Path: ', newPath);
       fs.unlink(oldPath, callback);
       resolve(filename);
     });
