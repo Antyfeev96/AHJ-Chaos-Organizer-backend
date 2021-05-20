@@ -97,7 +97,6 @@ app.use(async (ctx) => {
     });
 
     data[type].push(link);
-    console.log(data[type]);
         
     ctx.response.body = JSON.stringify({
       link,
@@ -108,8 +107,11 @@ app.use(async (ctx) => {
     }
   }
 
-  const { text, type, array } = ctx.request.query;
+  const { text, type, array, media } = ctx.request.query;
 
+  if (media) {
+    ctx.response.body = data[media];
+  }
 
   switch (text) {
     case 'give-message':
