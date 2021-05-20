@@ -94,7 +94,10 @@ app.use(async (ctx) => {
       readStream.pipe(writeStream);
     });
         
-    ctx.response.body = link;
+    ctx.response.body = JSON.stringify({
+      link,
+      timestamp: format(),
+    });
     return;
     }
   }
