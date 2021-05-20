@@ -74,7 +74,7 @@ app.use(async (ctx) => {
     if (file) {
       const link = await new Promise((resolve, reject) => {
       const oldPath = file.path;
-      const filename = `uuidv4().png`;
+      const filename = `${uuidv4()}.png`;
       const newPath = path.join(public, filename);
         
       const callback = (error) => reject(error);
