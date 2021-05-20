@@ -69,7 +69,6 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
-  console.log(__dirname);
   const { file } = ctx.request.files;
   const { text, type, array } = ctx.request.query;
 
@@ -78,6 +77,7 @@ app.use(async (ctx) => {
     const oldPath = file.path;
     const filename = uuidv4();
     const newPath = path.join(public, filename);
+    console.log(newPath);
       
     const callback = (error) => reject(error);
       
@@ -85,7 +85,7 @@ app.use(async (ctx) => {
     const writeStream = fs.createWriteStream(newPath);
       
     readStream.on('error', callback);
-          writeStream.on('error', callback);
+    writeStream.on('error', callback);
       
     readStream.on('close', () => {
       console.log('close');
