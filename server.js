@@ -98,6 +98,7 @@ app.use(async (ctx) => {
 
     data[type].push({
       link,
+      type,
       timestamp: format()
     });
         
