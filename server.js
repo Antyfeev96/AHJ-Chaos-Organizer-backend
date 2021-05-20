@@ -74,7 +74,7 @@ app.use(async (ctx) => {
     if (file) {
       const link = await new Promise((resolve, reject) => {
       const oldPath = file.path;
-      const filename = uuidv4();
+      const filename = `uuidv4().png`;
       const newPath = path.join(public, filename);
         
       const callback = (error) => reject(error);
@@ -87,8 +87,6 @@ app.use(async (ctx) => {
         
       readStream.on('close', () => {
         console.log('close');
-        console.log('Public: ', public);
-        console.log('New Path: ', newPath);
         fs.unlink(oldPath, callback);
         resolve(filename);
       });
@@ -100,7 +98,7 @@ app.use(async (ctx) => {
     return;
     }
   }
-  
+
   const { text, type, array } = ctx.request.query;
 
 
