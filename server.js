@@ -69,37 +69,40 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx) => {
-  const { file } = ctx.request.files;
+  if (ctx.request.files) {
+    const { file } = ctx.request.files;
+    if (file) {
+      const link = await new Promise((resolve, reject) => {
+      const oldPath = file.path;
+      const filename = uuidv4();
+      const newPath = path.join(public, filename);
+        
+      const callback = (error) => reject(error);
+        
+      const readStream = fs.createReadStream(oldPath);
+      const writeStream = fs.createWriteStream(newPath);
+        
+      readStream.on('error', callback);
+      writeStream.on('error', callback);
+        
+      readStream.on('close', () => {
+        console.log('close');
+        console.log('Public: ', public);
+        console.log('New Path: ', newPath);
+        fs.unlink(oldPath, callback);
+        resolve(filename);
+      });
+        
+      readStream.pipe(writeStream);
+    });
+        
+    ctx.response.body = link;
+    return;
+    }
+  }
+  
   const { text, type, array } = ctx.request.query;
 
-  if (file) {
-    const link = await new Promise((resolve, reject) => {
-    const oldPath = file.path;
-    const filename = uuidv4();
-    const newPath = path.join(public, filename);
-      
-    const callback = (error) => reject(error);
-      
-    const readStream = fs.createReadStream(oldPath);
-    const writeStream = fs.createWriteStream(newPath);
-      
-    readStream.on('error', callback);
-    writeStream.on('error', callback);
-      
-    readStream.on('close', () => {
-      console.log('close');
-      console.log('Public: ', public);
-      console.log('New Path: ', newPath);
-      fs.unlink(oldPath, callback);
-      resolve(filename);
-    });
-      
-    readStream.pipe(writeStream);
-  });
-      
-  ctx.response.body = link;
-  return;
-  }
 
   switch (text) {
     case 'give-message':
