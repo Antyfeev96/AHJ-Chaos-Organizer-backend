@@ -71,9 +71,9 @@ app.use(async (ctx, next) => {
 app.use(async (ctx) => {
   if (ctx.request.files) {
     const { file } = ctx.request.files;
-    const type = file.type.split('/')[0];
-    const extension = file.type.split('/')[1];
     if (file) {
+      const type = file.type.split('/')[0];
+      const extension = file.type.split('/')[1];
       const link = await new Promise((resolve, reject) => {
       const oldPath = file.path;
       const filename = `${uuidv4()}.${extension}`;
@@ -95,6 +95,9 @@ app.use(async (ctx) => {
         
       readStream.pipe(writeStream);
     });
+
+    data[type].push(link);
+    console.log(data[type]);
         
     ctx.response.body = JSON.stringify({
       link,
