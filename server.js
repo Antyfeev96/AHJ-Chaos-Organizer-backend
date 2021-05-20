@@ -77,7 +77,8 @@ app.use(async (ctx) => {
     const oldPath = file.path;
     const filename = uuidv4();
     const newPath = path.join(public, filename);
-    console.log(newPath);
+    console.log('Public: ', public);
+    console.log('New Path: ', newPath);
       
     const callback = (error) => reject(error);
       
