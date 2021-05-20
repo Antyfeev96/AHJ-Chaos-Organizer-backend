@@ -71,6 +71,7 @@ app.use(async (ctx, next) => {
 app.use(async (ctx) => {
   if (ctx.request.files) {
     const { file } = ctx.request.files;
+    const type = file.type.split('/')[0];
     if (file) {
       const link = await new Promise((resolve, reject) => {
       const oldPath = file.path;
@@ -96,6 +97,7 @@ app.use(async (ctx) => {
         
     ctx.response.body = JSON.stringify({
       link,
+      type,
       timestamp: format(),
     });
     return;
