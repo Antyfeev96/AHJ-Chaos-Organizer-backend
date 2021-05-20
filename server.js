@@ -96,7 +96,10 @@ app.use(async (ctx) => {
       readStream.pipe(writeStream);
     });
 
-    data[type].push(link);
+    data[type].push({
+      link,
+      format()
+    });
         
     ctx.response.body = JSON.stringify({
       link,
