@@ -97,13 +97,13 @@ app.use(async (ctx) => {
     });
 
     data[type].push({
-      link,
+      link: `https://ahj-chaos-organizer-backend.herokuapp.com/public/${link}`,
       type,
       timestamp: format()
     });
         
     ctx.response.body = JSON.stringify({
-      link,
+      link: `https://ahj-chaos-organizer-backend.herokuapp.com/public/${link}`,
       type,
       timestamp: format(),
     });
