@@ -202,7 +202,6 @@ const router = new Router();
 
 app.use(router.routes()).use(router.allowedMethods());
 
-const host = '0.0.0.0';
 const port = process.env.PORT || 7070;
-const server = http.createServer(app.callback()).listen(port, host);
+const server = http.createServer(app.callback()).listen(port, '0.0.0.0');
 
