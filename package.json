@@ -20,6 +20,7 @@
   "scripts": {
     "watch": "forever -w server.js",
     "prestart": "npm install",
-    "start": "forever server.js"
+    "start": "forever server.js",
+    "postinstall": "npm run build"
   }
 }
