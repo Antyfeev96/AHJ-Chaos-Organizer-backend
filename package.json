@@ -19,7 +19,7 @@
   },
   "scripts": {
     "watch": "forever -w server.js",
-    "start": "forever server.js",
-    "postinstall": "npm run build"
+    "prestart": "npm install",
+    "start": "forever server.js"
   }
 }
