@@ -22,7 +22,6 @@
   },
   "scripts": {
     "watch": "forever -w server.js",
-    "prestart": "npm install",
     "start": "forever server.js"
   }
 }
