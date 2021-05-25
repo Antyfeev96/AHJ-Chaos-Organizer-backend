@@ -6,7 +6,6 @@ const koaStatic = require('koa-static');
 const koaBody = require('koa-body');
 const { v4: uuidv4 } = require('uuid');
 const Router = require("koa-router");
-// const faker = require('faker');
 const Formatter = require('./src/js/formatter.js');
 const format = Formatter.format;
 
