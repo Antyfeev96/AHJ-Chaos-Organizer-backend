@@ -2,7 +2,7 @@
   "name": "AHJ-Chaos-Organizer-backend",
   "version": "1.0.0",
   "description": "Backend part of AHJ diploma",
-  "main": "index.js",
+  "main": "server.js",
   "repository": "https://github.com/Antyfeev96/AHJ-Chaos-Organizer-backend.git",
   "author": "Dmitri Antyfeev <60137521+Antyfeev96@users.noreply.github.com>",
   "license": "MIT",
