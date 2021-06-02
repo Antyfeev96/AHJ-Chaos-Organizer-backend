@@ -9,7 +9,7 @@ const format = () => {
   //  seconds: 'numeric',
   // });
   const ms = date.getMilliseconds();
-  console.log(moment(ms).format('HH:mm:ss'));
+  console.log(moment(ms));
 
   return ms.toString();
 };
