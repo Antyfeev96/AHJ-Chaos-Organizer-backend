@@ -110,7 +110,11 @@ app.use(async (ctx) => {
     }
   }
 
-  const { text, type, array, media } = ctx.request.query;
+  const { text, type, array, media, init } = ctx.request.query;
+
+  if (init) {
+    ctx.response.body = data;
+  }
 
   if (media) {
     ctx.response.body = data[media];
@@ -195,6 +199,8 @@ app.use(async (ctx) => {
     default:
       break;
   }
+
+  if
 });
 
 const router = new Router();
