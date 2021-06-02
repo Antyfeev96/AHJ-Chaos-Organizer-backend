@@ -199,8 +199,6 @@ app.use(async (ctx) => {
     default:
       break;
   }
-
-  if
 });
 
 const router = new Router();
