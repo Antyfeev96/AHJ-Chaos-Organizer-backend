@@ -12,6 +12,7 @@ const format = Formatter.format;
 const public = path.join(__dirname, '/public')
 
 const app = new Koa();
+const url = 'http://localhost:7070';
 
 app.use(koaStatic(public));
 
@@ -58,7 +59,7 @@ app.use(async (ctx, next) => {
   if (ctx.request.get("Access-Control-Request-Headers")) {
     ctx.response.set(
       "Access-Control-Allow-Headers",
-      ctx.request.get("Access-Control-Request-Headers")
+      [ctx.request.get("Access-Control-Request-Headers"), 'origin']
     );
   }
 
@@ -96,15 +97,15 @@ app.use(async (ctx) => {
     });
 
     data[type].push({
-      link: `https://ahj-chaos-organizer-backend.herokuapp.com/${link}`,
+      link: `${url}/${link}`,
       type,
-      timestamp: format()
+      dateObj: format(),
     });
         
     ctx.response.body = JSON.stringify({
-      link: `https://ahj-chaos-organizer-backend.herokuapp.com/${link}`,
+      link: `${url}/${link}`,
       type,
-      timestamp: format(),
+      dateObj: format(),
     });
     return;
     }
@@ -144,7 +145,7 @@ app.use(async (ctx) => {
     text,
     type,
     id: uuidv4(),
-    timestamp: format(),
+    dateObj: format(),
   }
   
   switch (type) {
@@ -205,6 +206,6 @@ const router = new Router();
 
 app.use(router.routes()).use(router.allowedMethods());
 
-const port = process.env.PORT || 7000;
+const port = process.env.PORT || 7070;
 const server = http.createServer(app.callback()).listen(port, '0.0.0.0');
 

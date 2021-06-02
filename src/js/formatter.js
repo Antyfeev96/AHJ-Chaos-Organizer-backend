@@ -1,17 +1,10 @@
 const moment = require('moment');
 
 const format = () => {
-  const date = new Date();
-
-  // const formatter = new Intl.DateTimeFormat('ru', {
-  //  hour: 'numeric',
-  //  minute: 'numeric',
-  //  seconds: 'numeric',
-  // });
-  const ms = date.getMilliseconds();
-  console.log(moment(ms));
-
-  return ms.toString();
+  return {
+    date: +moment().valueOf(),
+    timestamp: moment().format('HH:mm:ss')
+  }
 };
 
 module.exports.format = format;
