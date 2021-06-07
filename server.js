@@ -12,7 +12,7 @@ const format = Formatter.format;
 const public = path.join(__dirname, '/public')
 
 const app = new Koa();
-const url = 'http://localhost:7070';
+const url = 'https://ahj-chaos-organizer-backend.herokuapp.com';
 
 app.use(koaStatic(public));
 
@@ -52,7 +52,7 @@ app.use(async (ctx, next) => {
   if (ctx.request.get("Access-Control-Request-Method")) {
     ctx.response.set({
       ...headers,
-      "Access-Control-Allow-Methods": "GET, POST, PUD, DELETE, PATCH",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH",
     });
   }
 
